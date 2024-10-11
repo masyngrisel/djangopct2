@@ -1,0 +1,29 @@
+{% extends "recipe/base.html" %}
+{% load recipe_tags %}
+
+{% block title %}My Recipe Blog{% endblock title %}
+
+{% block content %}
+    <h1>My Recipe Blog</h1>
+    {% if tag %}
+        <h2>Recipes tagged with "{{ tag.name }}"</h2>
+    {% endif %}
+    {% for report in reports %}
+    <h2>
+        <a href="{{ report.get_absolute_url }}">
+            {{ report.title }}
+        </a>
+    </h2>
+    <p class = "tags">Tags: {% for tag in report.tags.all %}
+        <a href="{% url "recipe:report_list_by_tag" tag.slug %}">
+            {{ tag.name }}
+        </a>{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+    </p>
+    <p class="date">
+        Published {{ report.publish }} by {{ report.author }}
+    </p>
+    {{ report.body|markdown|truncatewords_html:30}}
+    {% endfor %}
+    {% include "pagination.html" with page=reports %}
+{% endblock content %}

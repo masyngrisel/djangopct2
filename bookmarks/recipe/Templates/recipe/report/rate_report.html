@@ -1,0 +1,16 @@
+{% extends 'recipe/base.html' %}
+
+{% block title %}Rate "{{ report.title }}"{% endblock %}
+
+{% block content %}
+  {% if success_message %}
+    <h1>{{ success_message }}</h1>
+  {% else %}
+    <h1>Rate "{{ report.title }}"</h1>
+    <form method="POST">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Submit Rating">
+    </form>
+  {% endif %}
+{% endblock %}

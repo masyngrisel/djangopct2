@@ -1,0 +1,7 @@
+<ul>
+    {% for report in latest_reports %}
+        <li>
+            <a href="{{ report.get_absolute_url }}">{{ report.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

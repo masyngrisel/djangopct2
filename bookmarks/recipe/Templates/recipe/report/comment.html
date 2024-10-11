@@ -1,0 +1,12 @@
+{% extends "recipe/base.html" %}
+
+{% block title %}Add a comment{% endblock %}
+
+{% block content %}
+  {% if comment %}
+    <h2>Your comment has been added.</h2>
+    <p><a href="{{ report.get_absolute_url }}">Back to the report</a></p>
+  {% else %}
+    {% include "recipe/report/includes/comment_form.html" %}
+  {% endif %}
+{% endblock %}

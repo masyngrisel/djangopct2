@@ -1,0 +1,39 @@
+{% load recipe_tags %}
+{% load static %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}{% endblock title %}</title>
+    <link href = "{% static "css/blog.css" %}" rel = "stylesheet">
+
+</head>
+<body>
+    <div id="content">
+        {% block content %}
+        {% endblock %}
+    </div>
+    <div id="sidebar">
+        <h2>My Recipe Blog</h2>
+        <p>This is my recipe blog.
+            I've written {% total_reports %} reports so far.
+        </p>
+        <p>
+            <a href="{% url "recipe:report_feed" %}">
+                Subscribe to my RSS feed 
+            </a>
+        <h3>Latest reports</h3>
+        {% show_latest_reports 3 %}
+        <h3>Most commented reports</h3>
+        {% get_most_commented_reports as most_commented_reports %}
+        <ul>
+            {% for report in most_commented_reports %}
+                <li>
+                    <a href="{{ report.get_absolute_url }}">{{ report.title }}</a>
+                <li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>

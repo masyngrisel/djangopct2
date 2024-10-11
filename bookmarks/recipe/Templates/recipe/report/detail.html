@@ -1,0 +1,58 @@
+{% extends 'recipe/base.html' %}
+{% load recipe_tags %}
+{% block title %}{{ report.title }}{% endblock title%}
+{% block content %}
+    <h1>{{ report.title }}</h1>
+    <p class='date'>
+        Published {{ report.publish }} by {{ report.author }}
+    </p>
+    {{ report.body|markdown }}
+    <p>
+        <a href="{% url 'recipe:report_share' report.id %}">
+            Share this report
+        </a>
+    </p>
+    
+    <h2>Rate this report</h2>
+    <form action="{% url 'recipe:rate_report' report.id %}" method="POST">
+        {{ form.as_p }}
+        {% csrf_token %}
+        <input type="submit" value="Submit Rating">
+    </form>
+
+    <h2>Average Rating</h2>
+    <p>
+        {% if report.average_rating %}
+            {{ report.average_rating|floatformat:1 }} / 5
+        {% else %}
+            No ratings yet.
+        {% endif %}
+    </p>
+
+    <h2>Similar reports</h2>
+    {% for report in similar_reports %}
+        <p>
+            <a href="{{ report.get_absolute_url }}">{{ report.title }}</a>
+        </p>
+        {% empty %}
+            There are no similar reports yet.
+        {% endfor %}
+    
+    {% with comments.count as total_comments %}
+        <h2>
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="info">
+                Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>There are no comments yet.</p>
+    {% endfor %}
+    {% include "recipe/report/includes/comment_form.html" %}
+{% endblock content %}

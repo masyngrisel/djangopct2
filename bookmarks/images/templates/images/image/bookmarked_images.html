@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Your Bookmarked Images{% endblock %}
+
+{% block content %}
+<h2>Your Bookmarked Images</h2>
+<ul>
+  {% for image in bookmarked_images %}
+    <li>
+      <h3>{{ image.title }}</h3>
+      <img src="{{ image.image.url }}" alt="{{ image.title }}">
+      <p>{{ image.description }}</p>
+      <p>Likes: {{ image.total_likes }}</p>
+      <a href="{{ image.get_absolute_url }}">View Details</a>
+    </li>
+  {% empty %}
+    <li>No bookmarked images found.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

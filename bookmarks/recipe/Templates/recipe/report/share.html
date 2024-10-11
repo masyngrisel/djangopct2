@@ -1,0 +1,19 @@
+{% extends "recipe/base.html" %}
+
+{% block title %}Share a report{% endblock %}
+
+{% block content %}
+  {% if sent %}
+    <h1>E-mail successfully sent</h1>
+    <p>
+      "{{ report.title }}" was successfully sent to {{ form.cleaned_data.to }}.
+    </p>
+  {% else %}
+    <h1>Share "{{ report.title }}" by e-mail</h1>
+    <form method="report">
+      {{ form.as_p }}
+      {% csrf_token %}
+      <input type="submit" value="Send e-mail">
+    </form>
+  {% endif %}
+{% endblock %}
