@@ -40,6 +40,9 @@ class Report(models.Model):
     objects = models.Manager()
     published = PublishedManager()
     
+    def get_bookmarked_images(self):
+        return self.images.all()
+    
     @property
     def average_rating(self):
         ratings = self.ratings.aggregate(Avg('value'))

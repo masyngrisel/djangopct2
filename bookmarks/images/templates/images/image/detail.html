@@ -8,6 +8,8 @@
   <a href="{{ image.image.url }}">
     <img src="{% thumbnail image.image 300x0 %}" class="image-detail">
   </a>
+  <p>Recipe: <a href="{{ image.recipe.get_absolute_url }}">{{ image.recipe.title }}</a>
+  <p>{{ image.recipe.description }}</p>
   {% with total_likes=image.users_like.count users_like=image.users_like.all %}
     <div class="image-info">
       <div>
@@ -32,7 +34,7 @@
           {% if user.profile.photo %}
             <img src="{{ user.profile.photo.url }}">
           {% endif %}
-          <p>{{ user.first_name }}</p>
+          <p>{{ user.first_name }} likes this image</p>
         </div>
       {% empty %}
         Nobody likes this image yet.

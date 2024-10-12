@@ -4,7 +4,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
-
+import requests
 from .forms import ImageCreateForm
 from .models import Image
 
@@ -19,9 +19,10 @@ def image_create(request):
         if form.is_valid():
             # form data is valid
             cd = form.cleaned_data
+        if form.is_valid():
             new_image = form.save(commit=False)
-            # assign current user to the item
             new_image.user = request.user
+            new_image.recipe = form.cleaned_data['recipe']  # associate the recipe
             new_image.save()
             create_action(request.user, 'bookmarked image', new_image)
             messages.success(request, 'Image added successfully')
@@ -38,6 +39,7 @@ def image_create(request):
 
 def image_detail(request, id, slug):
     image = get_object_or_404(Image, id=id, slug=slug)
+    recipe = image.recipe
     return render(
         request,
         'images/image/detail.html',

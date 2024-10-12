@@ -12,7 +12,13 @@
             Share this report
         </a>
     </p>
-    
+    <ul>
+        {% for image in report.get_bookmarked_images %}
+        <li>
+            <img src="{{ image.image_file.url }}" alt="Recipe Image">
+        </li>
+        {% endfor %}
+    </ul>
     <h2>Rate this report</h2>
     <form action="{% url 'recipe:rate_report' report.id %}" method="POST">
         {{ form.as_p }}
